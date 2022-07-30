@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.iflytek.mscv5plusdemo"
+        minSdkVersion 16
+        targetSdkVersion 30
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+        compileOptions {
+            targetCompatibility 1.8 // or JavaVersion.VERSION_1_8
+            sourceCompatibility 1.8
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    allprojects {
+        repositories {
+            google()
+            mavenCentral()
+        }
+    }
+}
+
+dependencies {
+    implementation files('libs/Msc.jar')
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.4.0'
+}
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        //版本号请根据自己的gradle插件版本号自行更改
+        classpath 'com.android.tools.build:gradle:3.4.0'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
