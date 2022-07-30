@@ -5,7 +5,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.iflytek.mscv5plusdemo"
+        applicationId "com.sccc.mscv5plusdemo"
         minSdkVersion 16
         targetSdkVersion 30
     }

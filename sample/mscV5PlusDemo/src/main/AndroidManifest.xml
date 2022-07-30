@@ -13,7 +13,7 @@
         android:name="com.sccc.mscv5plusdemo.SpeechApp"
         android:label="讯飞语音示例v5+">
         <activity
-            android:name="com.iflytek.mscv5plusdemo.com.sccc.mscv5plusdemo.MainActivity"
+            android:name="com.sccc.mscv5plusdemo.MainActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|fontScale"
             android:icon="@drawable/icon"
             android:label="讯飞语音示例v5+"
@@ -27,27 +27,27 @@
         <activity android:name="com.sccc.speech.setting.TtsSettings"/>
         <activity android:name="com.sccc.speech.setting.IatSettings"/>
         <activity
-            android:name="com.iflytek.mscv5plusdemo.com.sccc.mscv5plusdemo.IatDemo"
+            android:name="com.sccc.mscv5plusdemo.IatDemo"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|fontScale"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.iflytek.mscv5plusdemo.com.sccc.mscv5plusdemo.AsrDemo"
+            android:name="com.sccc.mscv5plusdemo.AsrDemo"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|fontScale"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.iflytek.mscv5plusdemo.com.sccc.mscv5plusdemo.TtsDemo"
+            android:name="com.sccc.mscv5plusdemo.TtsDemo"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|fontScale"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.iflytek.mscv5plusdemo.com.sccc.mscv5plusdemo.IvwActivity"
+            android:name="com.sccc.mscv5plusdemo.IvwActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|fontScale"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.iflytek.mscv5plusdemo.com.sccc.mscv5plusdemo.WakeDemo"
+            android:name="com.sccc.mscv5plusdemo.WakeDemo"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|fontScale"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.iflytek.mscv5plusdemo.com.sccc.mscv5plusdemo.OneShotDemo"
+            android:name="com.sccc.mscv5plusdemo.OneShotDemo"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|fontScale"
             android:screenOrientation="portrait"/>
     </application>
