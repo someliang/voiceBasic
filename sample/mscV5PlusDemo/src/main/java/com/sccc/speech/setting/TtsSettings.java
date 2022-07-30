@@ -1,4 +1,4 @@
-package com.iflytek.speech.setting;
+package com.sccc.speech.setting;
 
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -8,7 +8,7 @@ import android.preference.PreferenceActivity;
 import android.view.Window;
 
 import com.iflytek.mscv5plusdemo.R;
-import com.iflytek.speech.util.SettingTextWatcher;
+import com.sccc.speech.util.SettingTextWatcher;
 
 
 /**

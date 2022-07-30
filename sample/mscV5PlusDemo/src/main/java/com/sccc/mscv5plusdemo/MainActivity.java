@@ -1,4 +1,4 @@
-package com.iflytek.mscv5plusdemo;
+package com.sccc.mscv5plusdemo;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+
+import com.iflytek.mscv5plusdemo.R;
 
 
 public class MainActivity extends Activity {

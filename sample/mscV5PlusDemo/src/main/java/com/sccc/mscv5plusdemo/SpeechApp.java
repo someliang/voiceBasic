@@ -1,4 +1,4 @@
-package com.iflytek.mscv5plusdemo;
+package com.sccc.mscv5plusdemo;
 
 import android.app.Activity;
 import android.app.Application;
@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
+import com.iflytek.mscv5plusdemo.R;
 
 public class SpeechApp extends Application {
 

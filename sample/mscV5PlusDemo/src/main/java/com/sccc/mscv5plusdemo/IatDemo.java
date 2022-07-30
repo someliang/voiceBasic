@@ -1,4 +1,4 @@
-package com.iflytek.mscv5plusdemo;
+package com.sccc.mscv5plusdemo;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,9 +24,10 @@ import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.iflytek.cloud.util.ResourceUtil;
-import com.iflytek.speech.setting.IatSettings;
-import com.iflytek.speech.util.FucUtil;
-import com.iflytek.speech.util.JsonParser;
+import com.iflytek.mscv5plusdemo.R;
+import com.sccc.speech.setting.IatSettings;
+import com.sccc.speech.util.FucUtil;
+import com.sccc.speech.util.JsonParser;
 
 import java.io.IOException;
 import java.io.InputStream;

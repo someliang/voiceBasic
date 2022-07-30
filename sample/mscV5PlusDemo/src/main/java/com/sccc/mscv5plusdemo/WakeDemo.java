@@ -1,6 +1,5 @@
-package com.iflytek.mscv5plusdemo;
+package com.sccc.mscv5plusdemo;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +22,7 @@ import com.iflytek.cloud.WakeuperListener;
 import com.iflytek.cloud.WakeuperResult;
 import com.iflytek.cloud.util.ResourceUtil;
 import com.iflytek.cloud.util.ResourceUtil.RESOURCE_TYPE;
+import com.iflytek.mscv5plusdemo.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

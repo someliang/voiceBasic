@@ -1,4 +1,4 @@
-package com.iflytek.speech.util;
+package com.sccc.speech.util;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

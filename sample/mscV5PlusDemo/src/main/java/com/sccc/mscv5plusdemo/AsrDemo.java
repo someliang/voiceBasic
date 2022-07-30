@@ -1,4 +1,4 @@
-package com.iflytek.mscv5plusdemo;
+package com.sccc.mscv5plusdemo;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -25,9 +25,10 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.util.ResourceUtil;
 import com.iflytek.cloud.util.ResourceUtil.RESOURCE_TYPE;
-import com.iflytek.speech.util.FucUtil;
-import com.iflytek.speech.util.JsonParser;
-import com.iflytek.speech.util.XmlParser;
+import com.iflytek.mscv5plusdemo.R;
+import com.sccc.speech.util.FucUtil;
+import com.sccc.speech.util.JsonParser;
+import com.sccc.speech.util.XmlParser;
 
 public class AsrDemo extends Activity implements OnClickListener {
     private final static String TAG = AsrDemo.class.getSimpleName();

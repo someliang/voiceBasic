@@ -1,4 +1,4 @@
-package com.iflytek.mscv5plusdemo;
+package com.sccc.mscv5plusdemo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,7 +24,8 @@ import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
 import com.iflytek.cloud.util.ResourceUtil;
 import com.iflytek.cloud.util.ResourceUtil.RESOURCE_TYPE;
-import com.iflytek.speech.setting.TtsSettings;
+import com.iflytek.mscv5plusdemo.R;
+import com.sccc.speech.setting.TtsSettings;
 
 public class TtsDemo extends Activity implements OnClickListener {
     private static String TAG = TtsDemo.class.getSimpleName();

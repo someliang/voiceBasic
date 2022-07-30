@@ -1,4 +1,4 @@
-package com.iflytek.mscv5plusdemo;
+package com.sccc.mscv5plusdemo;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.iflytek.cloud.VoiceWakeuper;
+import com.iflytek.mscv5plusdemo.R;
 
 public class IvwActivity extends Activity implements OnClickListener {
 

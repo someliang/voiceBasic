@@ -1,4 +1,4 @@
-package com.iflytek.speech.util;
+package com.sccc.speech.util;
 
 import android.content.Context;
 import android.preference.EditTextPreference;

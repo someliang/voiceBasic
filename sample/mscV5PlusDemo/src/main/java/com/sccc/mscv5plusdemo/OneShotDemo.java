@@ -1,4 +1,4 @@
-package com.iflytek.mscv5plusdemo;
+package com.sccc.mscv5plusdemo;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,7 +27,8 @@ import com.iflytek.cloud.WakeuperListener;
 import com.iflytek.cloud.WakeuperResult;
 import com.iflytek.cloud.util.ResourceUtil;
 import com.iflytek.cloud.util.ResourceUtil.RESOURCE_TYPE;
-import com.iflytek.speech.util.JsonParser;
+import com.iflytek.mscv5plusdemo.R;
+import com.sccc.speech.util.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
