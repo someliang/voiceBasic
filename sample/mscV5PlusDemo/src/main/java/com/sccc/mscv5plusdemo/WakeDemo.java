@@ -220,65 +220,6 @@ public class WakeDemo extends Activity implements OnClickListener {
         }
     };
 
-    private SynthesizerListener mTtsListener = new SynthesizerListener() {
-
-        @Override
-        public void onSpeakBegin() {
-        }
-
-        @Override
-        public void onSpeakPaused() {
-            showTip("暂停播放");
-        }
-
-        @Override
-        public void onSpeakResumed() {
-            showTip("继续播放");
-        }
-
-        @Override
-        public void onBufferProgress(int percent, int beginPos, int endPos,
-                                     String info) {
-            // 合成进度
-//            mPercentForBuffering = percent;
-//            showTip(String.format(getString(R.string.tts_toast_format),
-//                    mPercentForBuffering, mPercentForPlaying));
-        }
-
-        @Override
-        public void onSpeakProgress(int percent, int beginPos, int endPos) {
-            // 播放进度
-//            mPercentForPlaying = percent;
-//            showTip(String.format(getString(R.string.tts_toast_format),
-//                    mPercentForBuffering, mPercentForPlaying));
-        }
-
-        @Override
-        public void onCompleted(SpeechError error) {
-//            if (error == null) {
-//                showTip("播放完成");
-//            } else {
-//                showTip(error.getPlainDescription(true));
-//            }
-        }
-
-        @Override
-        public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
-            // 以下代码用于获取与云端的会话id，当业务出错时将会话id提供给技术支持人员，可用于查询会话日志，定位出错原因
-            // 若使用本地能力，会话id为null
-            if (SpeechEvent.EVENT_SESSION_ID == eventType) {
-                String sid = obj.getString(SpeechEvent.KEY_EVENT_AUDIO_URL);
-                Log.d(TAG, "session id =" + sid);
-            }
-
-            //实时音频流输出参考
-			/*if (SpeechEvent.EVENT_TTS_BUFFER == eventType) {
-				byte[] buf = obj.getByteArray(SpeechEvent.KEY_EVENT_TTS_BUFFER);
-				Log.e("MscSpeechLog", "buf is =" + buf);
-			}*/
-        }
-    };
-
     private InitListener mTtsInitListener = new InitListener() {
         @Override
         public void onInit(int code) {
@@ -301,7 +242,7 @@ public class WakeDemo extends Activity implements OnClickListener {
             int onResult = Log.d(TAG, "onResult");
 
             String answer = "哎！又咋个咯？";
-            int code = mTts.startSpeaking(answer, mTtsListener);
+            int code = mTts.startSpeaking(answer, null);
 
             if (!"1".equalsIgnoreCase(keep_alive)) {
                 setRadioEnable(true);
