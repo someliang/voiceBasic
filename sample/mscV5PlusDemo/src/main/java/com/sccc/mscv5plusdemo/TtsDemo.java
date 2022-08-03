@@ -32,7 +32,7 @@ public class TtsDemo extends Activity implements OnClickListener {
     // 语音合成对象
     private SpeechSynthesizer mTts;
     // 默认云端发音人
-    public static String voicerCloud = "xiaoyan";
+    public static String voicerCloud = "xiaorong";
     // 默认本地发音人
     public static String voicerLocal = "xiaoyan";
 
