@@ -64,7 +64,7 @@ public class WakeDemo extends Activity implements OnClickListener {
         // 初始化唤醒对象
         mIvw = VoiceWakeuper.createWakeuper(this, null);
         //语音合成对象
-        mTts  = SpeechSynthesizer.createSynthesizer(this, mTtsInitListener);
+        mTts  = SpeechSynthesizer.createSynthesizer(this, null);
     }
 
     private void initUi() {
@@ -220,20 +220,6 @@ public class WakeDemo extends Activity implements OnClickListener {
         }
     };
 
-    private InitListener mTtsInitListener = new InitListener() {
-        @Override
-        public void onInit(int code) {
-            Log.d(TAG, "InitListener init() code = " + code);
-//            if (code != ErrorCode.SUCCESS) {
-//                showTip("初始化失败,错误码：" + code + ",请点击网址https://www.xfyun.cn/document/error-code查询解决方案");
-//
-//            } else {
-//                // 初始化成功，之后可以调用startSpeaking方法
-//                // 注：有的开发者在onCreate方法中创建完合成对象之后马上就调用startSpeaking进行合成，
-//                // 正确的做法是将onCreate中的startSpeaking调用移至这里
-//            }
-        }
-    };
 
     private WakeuperListener mWakeuperListener = new WakeuperListener() {
 
@@ -241,7 +227,7 @@ public class WakeDemo extends Activity implements OnClickListener {
         public void onResult(WakeuperResult result) {
             int onResult = Log.d(TAG, "onResult");
 
-            String answer = "哎！又咋个咯？";
+            String answer = "哎！";
             int code = mTts.startSpeaking(answer, null);
 
             if (!"1".equalsIgnoreCase(keep_alive)) {

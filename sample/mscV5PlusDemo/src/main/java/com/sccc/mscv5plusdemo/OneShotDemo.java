@@ -17,11 +17,13 @@ import android.widget.Toast;
 
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.GrammarListener;
+import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechEvent;
 import com.iflytek.cloud.SpeechRecognizer;
+import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.VoiceWakeuper;
 import com.iflytek.cloud.WakeuperListener;
 import com.iflytek.cloud.WakeuperResult;
@@ -67,6 +69,9 @@ public class OneShotDemo extends Activity implements OnClickListener {
     // 引擎类型
     private String mEngineType = SpeechConstant.TYPE_CLOUD;
 
+    //语音合成对象
+    private SpeechSynthesizer mTts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +87,9 @@ public class OneShotDemo extends Activity implements OnClickListener {
         // 初始化语法文件
         mCloudGrammar = readFile(this, "wake_grammar_sample.abnf", "utf-8");
         mLocalGrammar = readFile(this, "wake.bnf", "utf-8");
+
+        //语音合成对象
+        mTts  = SpeechSynthesizer.createSynthesizer(this, mTtsInitListener);
     }
 
     private void initUI() {
@@ -249,10 +257,24 @@ public class OneShotDemo extends Activity implements OnClickListener {
         }
     }
 
+    private InitListener mTtsInitListener = new InitListener() {
+        @Override
+        public void onInit(int code) {
+            Log.d(TAG, "InitListener init() code = " + code);
+            if (code != ErrorCode.SUCCESS) {
+                showTip("初始化失败,错误码：" + code + ",请点击网址https://www.xfyun.cn/document/error-code查询解决方案");
+            } else {
+                // 初始化成功，之后可以调用startSpeaking方法
+                // 注：有的开发者在onCreate方法中创建完合成对象之后马上就调用startSpeaking进行合成，
+                // 正确的做法是将onCreate中的startSpeaking调用移至这里
+            }
+        }
+    };
     private WakeuperListener mWakeuperListener = new WakeuperListener() {
 
         @Override
         public void onResult(WakeuperResult result) {
+
             try {
                 String text = result.getResultString();
                 JSONObject object;
@@ -284,6 +306,8 @@ public class OneShotDemo extends Activity implements OnClickListener {
 
         @Override
         public void onBeginOfSpeech() {
+            String answer = "哎！又咋个咯？";
+            int code = mTts.startSpeaking(answer, null);
             showTip("开始说话");
         }
 
