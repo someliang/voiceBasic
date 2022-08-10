@@ -1,7 +1,9 @@
 package com.sccc.mscv5plusdemo;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,11 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.GrammarListener;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.RequestListener;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechEvent;
+import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
 import com.iflytek.cloud.VoiceWakeuper;
@@ -27,6 +31,7 @@ import com.iflytek.cloud.WakeuperResult;
 import com.iflytek.cloud.util.ResourceUtil;
 import com.iflytek.cloud.util.ResourceUtil.RESOURCE_TYPE;
 import com.iflytek.mscv5plusdemo.R;
+import com.sccc.speech.util.FucUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,8 +56,29 @@ public class WakeDemo extends Activity implements OnClickListener {
     private String keep_alive = "1";
     private String ivwNetMode = "0";
 
-
+    //语音合成对象
     private SpeechSynthesizer mTts;
+
+    // 语音识别对象
+    private SpeechRecognizer mAsr;
+    // 缓存
+    private SharedPreferences mSharedPreferences;
+    // 本地语法文件
+    private String mLocalGrammar = null;
+    // 本地词典
+    private String mLocalLexicon = null;
+    // 云端语法文件
+    private String mCloudGrammar = null;
+    // 本地语法构建路径
+    private String grmPath;
+    // 返回结果格式，支持：xml,json
+    private String mResultType = "json";
+
+    private final String KEY_GRAMMAR_ABNF_ID = "grammar_abnf_id";
+    private final String GRAMMAR_TYPE_ABNF = "abnf";
+    private final String GRAMMAR_TYPE_BNF = "bnf";
+
+    private String mEngineType = "local";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +91,20 @@ public class WakeDemo extends Activity implements OnClickListener {
         mIvw = VoiceWakeuper.createWakeuper(this, null);
         //语音合成对象
         mTts  = SpeechSynthesizer.createSynthesizer(this, null);
+
+        //获得录音地址
+        grmPath = getExternalFilesDir("msc").getAbsolutePath() + "/test";
+        // 初始化识别对象
+        mAsr = SpeechRecognizer.createRecognizer(this, null);
+        if (mAsr == null) {
+            Log.e(TAG, "masr is null");
+        }
+        // 初始化语法、命令词
+        mLocalLexicon = "张海羊\n刘婧\n王锋";
+        mLocalGrammar = FucUtil.readFile(this, "call.bnf", "utf-8");
+        mCloudGrammar = FucUtil.readFile(this, "grammar_sample.abnf", "utf-8");
+
+        mSharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
     }
 
     private void initUi() {
@@ -155,6 +195,23 @@ public class WakeDemo extends Activity implements OnClickListener {
                     /*	mIvw.setParameter(SpeechConstant.AUDIO_SOURCE, "-1");*/
 
                     mIvw.startListening(mWakeuperListener);
+
+                    String mContent = new String(mLocalGrammar);
+                    mAsr.setParameter(SpeechConstant.PARAMS, null);
+                    // 设置文本编码格式
+                    mAsr.setParameter(SpeechConstant.TEXT_ENCODING, "utf-8");
+                    // 设置引擎类型
+                    mAsr.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_LOCAL);
+                    // 设置语法构建路径
+                    mAsr.setParameter(ResourceUtil.GRM_BUILD_PATH, grmPath);
+                    //使用8k音频的时候请解开注释
+//					mAsr.setParameter(SpeechConstant.SAMPLE_RATE, "8000");
+                    // 设置资源路径
+                    mAsr.setParameter(ResourceUtil.ASR_RES_PATH, getResourcePath());
+                    int ret = mAsr.buildGrammar(GRAMMAR_TYPE_BNF, mContent, grammarListener);
+                    if (ret != ErrorCode.SUCCESS) {
+                        showTip("语法构建失败,错误码：" + ret + ",请点击网址https://www.xfyun.cn/document/error-code查询解决方案");
+                    }
                 } else {
                     showTip("唤醒未初始化");
                 }
@@ -178,6 +235,25 @@ public class WakeDemo extends Activity implements OnClickListener {
         showTip("updateResource ret:" + ret);
     }
 
+    /**
+     * 构建语法监听器。
+     */
+    private GrammarListener grammarListener = new GrammarListener() {
+        @Override
+        public void onBuildFinish(String grammarId, SpeechError error) {
+            if (error == null) {
+                if (mEngineType.equals(SpeechConstant.TYPE_CLOUD)) {
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+                    if (!TextUtils.isEmpty(grammarId))
+                        editor.putString(KEY_GRAMMAR_ABNF_ID, grammarId);
+                    editor.commit();
+                }
+                showTip("语法构建成功：" + grammarId);
+            } else {
+                showTip("语法构建失败,错误码：" + error.getErrorCode());
+            }
+        }
+    };
 
     // 查询资源请求回调监听
     private RequestListener requestListener = new RequestListener() {
@@ -324,5 +400,13 @@ public class WakeDemo extends Activity implements OnClickListener {
             }
         });
     }
+
+    private String getResourcePath() {
+        StringBuffer tempBuffer = new StringBuffer();
+        //识别通用资源
+        tempBuffer.append(ResourceUtil.generateResourcePath(this, RESOURCE_TYPE.assets, "asr/common.jet"));
+        return tempBuffer.toString();
+    }
+
 
 }
