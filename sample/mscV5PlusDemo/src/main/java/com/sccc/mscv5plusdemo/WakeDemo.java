@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SeekBar;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.GrammarListener;
 import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerListener;
+import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.RequestListener;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
@@ -32,6 +35,8 @@ import com.iflytek.cloud.util.ResourceUtil;
 import com.iflytek.cloud.util.ResourceUtil.RESOURCE_TYPE;
 import com.iflytek.mscv5plusdemo.R;
 import com.sccc.speech.util.FucUtil;
+import com.sccc.speech.util.JsonParser;
+import com.sccc.speech.util.XmlParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -283,6 +288,65 @@ public class WakeDemo extends Activity implements OnClickListener {
     };
 
 
+    /**
+     * 识别监听器。
+     */
+    private RecognizerListener mRecognizerListener = new RecognizerListener() {
+
+        @Override
+        public void onVolumeChanged(int volume, byte[] data) {
+            showTip("当前正在说话，音量大小：" + volume);
+            Log.d(TAG, "返回音频数据：" + data.length);
+        }
+
+        @Override
+        public void onResult(final RecognizerResult result, boolean isLast) {
+            if (null != result && !TextUtils.isEmpty(result.getResultString())) {
+                Log.d(TAG, "recognizer result：" + result.getResultString());
+                String text = "";
+                if (mResultType.equals("json")) {
+                    text = JsonParser.parseGrammarResult(result.getResultString(), SpeechConstant.TYPE_LOCAL);
+                } else if (mResultType.equals("xml")) {
+                    text = XmlParser.parseNluResult(result.getResultString());
+                } else {
+                    text = result.getResultString();
+                }
+                // 显示
+                ((EditText) findViewById(R.id.isr_text)).setText(text);
+            } else {
+                Log.d(TAG, "recognizer result : null");
+            }
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+            // 此回调表示：检测到了语音的尾端点，已经进入识别过程，不再接受语音输入
+            showTip("结束说话");
+        }
+
+        @Override
+        public void onBeginOfSpeech() {
+            // 此回调表示：sdk内部录音机已经准备好了，用户可以开始语音输入
+            showTip("开始说话");
+        }
+
+        @Override
+        public void onError(SpeechError error) {
+            showTip("onError Code：" + error.getErrorCode() + error.getErrorDescription() + error.getMessage());
+        }
+
+        @Override
+        public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+            // 以下代码用于获取与云端的会话id，当业务出错时将会话id提供给技术支持人员，可用于查询会话日志，定位出错原因
+            // 若使用本地能力，会话id为null
+            //	if (SpeechEvent.EVENT_SESSION_ID == eventType) {
+            //		String sid = obj.getString(SpeechEvent.KEY_EVENT_SESSION_ID);
+            //		Log.d(TAG, "session id =" + sid);
+            //	}
+        }
+
+    };
+
     private WakeuperListener mWakeuperListener = new WakeuperListener() {
 
         @Override
@@ -291,6 +355,11 @@ public class WakeDemo extends Activity implements OnClickListener {
 
             String answer = "哎！";
             int code = mTts.startSpeaking(answer, null);
+
+            int ret = mAsr.startListening(mRecognizerListener);
+            if (ret != ErrorCode.SUCCESS) {
+                showTip("识别失败,错误码: " + ret + ",请点击网址https://www.xfyun.cn/document/error-code查询解决方案");
+            }
 
             if (!"1".equalsIgnoreCase(keep_alive)) {
                 setRadioEnable(true);

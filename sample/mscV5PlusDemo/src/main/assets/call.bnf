@@ -6,7 +6,7 @@
 !slot <callTo>;
 !start <callStart>;
 <callStart>:[<callPre>][<callTo>]<contact><callPhone>|[<callPre>]<callPhone>[<callTo>]<contact>;
-<contact>:张海洋;
+<contact>: A102;
 <callPre>:我要|我想|我想要;
-<callPhone>:打电话;
-<callTo>:给;
+<callPhone>:打开;
+<callTo>:到;
