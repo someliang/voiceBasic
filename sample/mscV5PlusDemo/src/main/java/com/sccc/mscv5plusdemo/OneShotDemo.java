@@ -56,7 +56,6 @@ public class OneShotDemo extends Activity implements OnClickListener {
     private final static int MIN = 0;
     private int curThresh = 1450;
     private String threshStr = "门限值：";
-    private String keep_alive = "1";
     // 云端语法文件
     private String mCloudGrammar = null;
     // 云端语法id
@@ -179,8 +178,6 @@ public class OneShotDemo extends Activity implements OnClickListener {
                     mIvw.setParameter(SpeechConstant.IVW_SST, "oneshot");
                     // 设置返回结果格式
                     mIvw.setParameter(SpeechConstant.RESULT_TYPE, "json");
-                    // 设置持续进行唤醒
-                    mIvw.setParameter(SpeechConstant.KEEP_ALIVE, keep_alive);
 //
 //				mIvw.setParameter(SpeechConstant.IVW_SHOT_WORD, "0");
 

@@ -65,17 +65,11 @@ public class WakeDemo extends Activity implements OnClickListener {
     private SharedPreferences mSharedPreferences;
     // 本地语法文件
     private String mLocalGrammar = null;
-    // 本地词典
-    private String mLocalLexicon = null;
-    // 云端语法文件
-    private String mCloudGrammar = null;
     // 本地语法构建路径
     private String grmPath;
     // 返回结果格式，支持：xml,json
     private String mResultType = "json";
 
-    private final String KEY_GRAMMAR_ABNF_ID = "grammar_abnf_id";
-    private final String GRAMMAR_TYPE_ABNF = "abnf";
     private final String GRAMMAR_TYPE_BNF = "bnf";
 
     private String mEngineType = "local";
@@ -100,9 +94,7 @@ public class WakeDemo extends Activity implements OnClickListener {
             Log.e(TAG, "masr is null");
         }
         // 初始化语法、命令词
-        mLocalLexicon = "张海羊\n刘婧\n王锋";
         mLocalGrammar = FucUtil.readFile(this, "call.bnf", "utf-8");
-        mCloudGrammar = FucUtil.readFile(this, "grammar_sample.abnf", "utf-8");
 
         mSharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
     }
@@ -242,12 +234,6 @@ public class WakeDemo extends Activity implements OnClickListener {
         @Override
         public void onBuildFinish(String grammarId, SpeechError error) {
             if (error == null) {
-                if (mEngineType.equals(SpeechConstant.TYPE_CLOUD)) {
-                    SharedPreferences.Editor editor = mSharedPreferences.edit();
-                    if (!TextUtils.isEmpty(grammarId))
-                        editor.putString(KEY_GRAMMAR_ABNF_ID, grammarId);
-                    editor.commit();
-                }
                 showTip("语法构建成功：" + grammarId);
             } else {
                 showTip("语法构建失败,错误码：" + error.getErrorCode());
