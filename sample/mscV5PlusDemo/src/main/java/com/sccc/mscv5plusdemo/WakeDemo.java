@@ -325,7 +325,11 @@ public class WakeDemo extends Activity implements OnClickListener {
                     text = result.getResultString();
                 }
                 // 显示
-                ((EditText) findViewById(R.id.isr_text)).setText(text);
+                textView.setText(text);
+                String answer = "已帮您打开！";
+                int code = mTts.startSpeaking(answer, null);
+
+//                mIvw.startListening(mWakeuperListener);
             } else {
                 Log.d(TAG, "recognizer result : null");
             }
@@ -369,11 +373,13 @@ public class WakeDemo extends Activity implements OnClickListener {
             String answer = "哎！";
             int code = mTts.startSpeaking(answer, null);
 
+            mIvw.stopListening();
+
             if (!setParam()) {
                 showTip("请先构建语法。");
                 return;
             }
-            
+
             int ret = mAsr.startListening(mRecognizerListener);
             if (ret != ErrorCode.SUCCESS) {
                 showTip("识别失败,错误码: " + ret + ",请点击网址https://www.xfyun.cn/document/error-code查询解决方案");
