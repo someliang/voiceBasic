@@ -326,6 +326,7 @@ public class WakeDemo extends Activity implements OnClickListener {
                 }
                 // 显示
                 textView.setText(text);
+
                 String answer = "已帮您打开！";
                 int code = mTts.startSpeaking(answer, null);
 
