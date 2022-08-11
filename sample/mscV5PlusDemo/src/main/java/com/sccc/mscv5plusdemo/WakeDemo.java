@@ -94,7 +94,7 @@ public class WakeDemo extends Activity implements OnClickListener {
         //获得录音地址
         grmPath = getExternalFilesDir("msc").getAbsolutePath() + "/test";
         // 初始化识别对象
-        mAsr = SpeechRecognizer.createRecognizer(this, null);
+        mAsr = SpeechRecognizer.createRecognizer(this, mInitListener);
         if (mAsr == null) {
             Log.e(TAG, "masr is null");
         }
@@ -246,6 +246,19 @@ public class WakeDemo extends Activity implements OnClickListener {
         }
     };
 
+    /**
+     * 初始化监听器。
+     */
+    private InitListener mInitListener = new InitListener() {
+
+        @Override
+        public void onInit(int code) {
+            Log.d(TAG, "SpeechRecognizer init() code = " + code);
+            if (code != ErrorCode.SUCCESS) {
+                showTip("初始化失败,错误码：" + code + ",请点击网址https://www.xfyun.cn/document/error-code查询解决方案");
+            }
+        }
+    };
     // 查询资源请求回调监听
     private RequestListener requestListener = new RequestListener() {
         @Override
@@ -356,6 +369,11 @@ public class WakeDemo extends Activity implements OnClickListener {
             String answer = "哎！";
             int code = mTts.startSpeaking(answer, null);
 
+            if (!setParam()) {
+                showTip("请先构建语法。");
+                return;
+            }
+            
             int ret = mAsr.startListening(mRecognizerListener);
             if (ret != ErrorCode.SUCCESS) {
                 showTip("识别失败,错误码: " + ret + ",请点击网址https://www.xfyun.cn/document/error-code查询解决方案");
@@ -415,6 +433,8 @@ public class WakeDemo extends Activity implements OnClickListener {
         }
     };
 
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -463,5 +483,49 @@ public class WakeDemo extends Activity implements OnClickListener {
         return tempBuffer.toString();
     }
 
+    /**
+     * 参数设置
+     *
+     * @return
+     */
+    public boolean setParam() {
+        boolean result = false;
+        // 清空参数
+        mAsr.setParameter(SpeechConstant.PARAMS, null);
+        // 设置识别引擎
+        mAsr.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_LOCAL);
+//        if ("cloud".equalsIgnoreCase(mEngineType)) {
+//            String grammarId = mSharedPreferences.getString(KEY_GRAMMAR_ABNF_ID, null);
+//            if (TextUtils.isEmpty(grammarId)) {
+//                result = false;
+//            } else {
+//                // 设置返回结果格式
+//                mAsr.setParameter(SpeechConstant.RESULT_TYPE, mResultType);
+//                // 设置云端识别使用的语法id
+//                mAsr.setParameter(SpeechConstant.CLOUD_GRAMMAR, grammarId);
+//                result = true;
+//            }
+//        } else {
+            // 设置本地识别资源
+            mAsr.setParameter(ResourceUtil.ASR_RES_PATH, getResourcePath());
+            // 设置语法构建路径
+            mAsr.setParameter(ResourceUtil.GRM_BUILD_PATH, grmPath);
+            // 设置返回结果格式
+            mAsr.setParameter(SpeechConstant.RESULT_TYPE, mResultType);
+            // 设置本地识别使用语法id
+            mAsr.setParameter(SpeechConstant.LOCAL_GRAMMAR, "call");
+            // 设置识别的门限值
+            mAsr.setParameter(SpeechConstant.MIXED_THRESHOLD, "30");
+            // 使用8k音频的时候请解开注释
+//			mAsr.setParameter(SpeechConstant.SAMPLE_RATE, "8000");
+            result = true;
+//        }
+
+        // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
+        mAsr.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
+        mAsr.setParameter(SpeechConstant.ASR_AUDIO_PATH,
+                getExternalFilesDir("msc").getAbsolutePath() + "/asr.wav");
+        return result;
+    }
 
 }
