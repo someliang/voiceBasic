@@ -351,6 +351,13 @@ public class WakeDemo extends Activity implements OnClickListener {
         @Override
         public void onError(SpeechError error) {
             showTip("onError Code：" + error.getErrorCode() + error.getErrorDescription() + error.getMessage());
+            if(error.getErrorCode()==20005){
+                String answer = "对不起，没有有效的指令哟。";
+                int code = mTts.startSpeaking(answer, null);
+
+                mAsr.stopListening();
+                mIvw.startListening(mWakeuperListener);
+            }
         }
 
         @Override
