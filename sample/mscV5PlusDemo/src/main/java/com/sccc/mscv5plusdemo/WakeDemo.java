@@ -193,6 +193,7 @@ public class WakeDemo extends Activity implements OnClickListener {
 
                     mIvw.startListening(mWakeuperListener);
 
+                    //设置语法构建参数。
                     String mContent = new String(mLocalGrammar);
                     mAsr.setParameter(SpeechConstant.PARAMS, null);
                     // 设置文本编码格式
@@ -317,18 +318,15 @@ public class WakeDemo extends Activity implements OnClickListener {
             if (null != result && !TextUtils.isEmpty(result.getResultString())) {
                 Log.d(TAG, "recognizer result：" + result.getResultString());
                 String text = "";
-                if (mResultType.equals("json")) {
                     text = JsonParser.parseGrammarResult(result.getResultString(), SpeechConstant.TYPE_LOCAL);
-                } else if (mResultType.equals("xml")) {
-                    text = XmlParser.parseNluResult(result.getResultString());
-                } else {
-                    text = result.getResultString();
-                }
                 // 显示
                 textView.setText(text);
 
+                // 成功识别出命令并执行后的提示语音
                 String answer = "已帮您打开！";
                 int code = mTts.startSpeaking(answer, null);
+
+                //关闭识别麦克风，打开唤醒麦克风。
                 mAsr.stopListening();
                 mIvw.startListening(mWakeuperListener);
             } else {
@@ -352,9 +350,11 @@ public class WakeDemo extends Activity implements OnClickListener {
         public void onError(SpeechError error) {
             showTip("onError Code：" + error.getErrorCode() + error.getErrorDescription() + error.getMessage());
             if(error.getErrorCode()==20005){
+                //说话没有命令词时的语音提示。
                 String answer = "对不起，没有有效的指令哟。";
                 int code = mTts.startSpeaking(answer, null);
 
+                //停止语音麦克风，打开识别麦克风。
                 mAsr.stopListening();
                 mIvw.startListening(mWakeuperListener);
             }
@@ -508,32 +508,19 @@ public class WakeDemo extends Activity implements OnClickListener {
         mAsr.setParameter(SpeechConstant.PARAMS, null);
         // 设置识别引擎
         mAsr.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_LOCAL);
-//        if ("cloud".equalsIgnoreCase(mEngineType)) {
-//            String grammarId = mSharedPreferences.getString(KEY_GRAMMAR_ABNF_ID, null);
-//            if (TextUtils.isEmpty(grammarId)) {
-//                result = false;
-//            } else {
-//                // 设置返回结果格式
-//                mAsr.setParameter(SpeechConstant.RESULT_TYPE, mResultType);
-//                // 设置云端识别使用的语法id
-//                mAsr.setParameter(SpeechConstant.CLOUD_GRAMMAR, grammarId);
-//                result = true;
-//            }
-//        } else {
-            // 设置本地识别资源
-            mAsr.setParameter(ResourceUtil.ASR_RES_PATH, getResourcePath());
-            // 设置语法构建路径
-            mAsr.setParameter(ResourceUtil.GRM_BUILD_PATH, grmPath);
-            // 设置返回结果格式
-            mAsr.setParameter(SpeechConstant.RESULT_TYPE, mResultType);
-            // 设置本地识别使用语法id
-            mAsr.setParameter(SpeechConstant.LOCAL_GRAMMAR, "call");
-            // 设置识别的门限值
-            mAsr.setParameter(SpeechConstant.MIXED_THRESHOLD, "30");
-            // 使用8k音频的时候请解开注释
+        // 设置本地识别资源
+        mAsr.setParameter(ResourceUtil.ASR_RES_PATH, getResourcePath());
+        // 设置语法构建路径
+        mAsr.setParameter(ResourceUtil.GRM_BUILD_PATH, grmPath);
+        // 设置返回结果格式
+        mAsr.setParameter(SpeechConstant.RESULT_TYPE, mResultType);
+        // 设置本地识别使用语法id
+        mAsr.setParameter(SpeechConstant.LOCAL_GRAMMAR, "call");
+        // 设置识别的门限值
+        mAsr.setParameter(SpeechConstant.MIXED_THRESHOLD, "30");
+        // 使用8k音频的时候请解开注释
 //			mAsr.setParameter(SpeechConstant.SAMPLE_RATE, "8000");
-            result = true;
-//        }
+        result = true;
 
         // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
         mAsr.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
