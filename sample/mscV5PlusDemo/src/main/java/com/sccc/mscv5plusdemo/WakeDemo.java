@@ -329,8 +329,8 @@ public class WakeDemo extends Activity implements OnClickListener {
 
                 String answer = "已帮您打开！";
                 int code = mTts.startSpeaking(answer, null);
-
-//                mIvw.startListening(mWakeuperListener);
+                mAsr.stopListening();
+                mIvw.startListening(mWakeuperListener);
             } else {
                 Log.d(TAG, "recognizer result : null");
             }
