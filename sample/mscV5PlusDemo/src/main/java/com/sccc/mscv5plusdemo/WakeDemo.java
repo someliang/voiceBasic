@@ -99,7 +99,7 @@ public class WakeDemo extends Activity implements OnClickListener {
             Log.e(TAG, "masr is null");
         }
         // 初始化语法、命令词
-        mLocalGrammar = FucUtil.readFile(this, "call.bnf", "utf-8");
+        mLocalGrammar = FucUtil.readFile(this, "wake.bnf", "utf-8");
 
         mSharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
     }
@@ -515,7 +515,7 @@ public class WakeDemo extends Activity implements OnClickListener {
         // 设置返回结果格式
         mAsr.setParameter(SpeechConstant.RESULT_TYPE, mResultType);
         // 设置本地识别使用语法id
-        mAsr.setParameter(SpeechConstant.LOCAL_GRAMMAR, "call");
+        mAsr.setParameter(SpeechConstant.LOCAL_GRAMMAR, "wake");
         // 设置识别的门限值
         mAsr.setParameter(SpeechConstant.MIXED_THRESHOLD, "30");
         // 使用8k音频的时候请解开注释

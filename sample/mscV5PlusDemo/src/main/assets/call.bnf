@@ -6,7 +6,7 @@
 !slot <callTo>;
 !start <callStart>;
 <callStart>:[<callPre>][<callTo>]<contact><callPhone>|[<callPre>]<callPhone>[<callTo>]<contact>;
-<contact>: A102;
-<callPre>:我要|我想|我想要;
+<contact>: 8A102|8A103|8A104|8A106|8A108|8A109|8A202|8A203|8A204|8A206|8A207|8A209|;
+<callPre>:我要|我想|我想要|帮我;
 <callPhone>:打开;
 <callTo>:到;

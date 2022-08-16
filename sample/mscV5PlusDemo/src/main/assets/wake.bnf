@@ -2,7 +2,9 @@
 !grammar wake;
 !slot <callCmd>;
 !slot <contact>;
+!slot <className>;
 !start <callStart>;
-<callStart>:[<callCmd>]<callName>;
+<callStart>:[<callCmd>]<callName>|[<callCmd>]<className>;
 <callCmd>:打开|查询;
-<callName>:A102|A407|B206;
+<callName>:102|103|104|106|108|109|202|203|204|206|207|209|302|303|304|305|306|307|308|309|402|403|404|406|407|408;
+<className>:8B401|8B402|8B403|8B404|8B406|8B408;
